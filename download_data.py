@@ -18,3 +18,5 @@ driving_distances = all_tables[0]
 
 for table in all_tables[1:]:
     driving_distances = pd.merge(driving_distances, table)
+
+driving_distances.set_index("Distance (km)", inplace=True)
