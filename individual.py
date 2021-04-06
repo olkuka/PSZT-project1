@@ -34,8 +34,8 @@ class Individual():
     def get_gene(self, index):
         return self.path[index]
 
-    def set_gene(self, index, new_city):
-        self.path[index] = new_city
+    def set_gene(self, index, new_gene):
+        self.path[index] = new_gene
 
     def get_length(self):
         return len(self.path)
@@ -49,12 +49,11 @@ class Individual():
         path_length = 0
         origin = self.path[0]
 
-        for destination in self.path[1:]:
+        for destination in self.path[1:]+[self.path[0]]:
             path_length += int(self.distances_table[self.distances_table.index == origin][destination])
             origin = destination
+
+
         
         return path_length
-
-    # TODO???
-    # def __str__:
 

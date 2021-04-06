@@ -16,6 +16,7 @@ class travellingSalesman():
     mutation_probability = 0.2
     tournament_size = 2
     elitism = True
+    permutation_number = 5
 
 
     @staticmethod
@@ -34,7 +35,10 @@ class travellingSalesman():
             evolved_population.append_individual(new_individual)
 
         for i in range(start, population.get_size()):
-            travellingSalesman.mutation(evolved_population.get_individual(i))
+            if random.random() <= 0.5:
+                travellingSalesman.inverse_mutation(evolved_population.get_individual(i))
+            else:
+                travellingSalesman.inverse_mutation(evolved_population.get_individual(i))
 
         return evolved_population
 
@@ -59,11 +63,21 @@ class travellingSalesman():
         return child
 
     @staticmethod
-    def mutation(individual):
+    def inverse_mutation(individual):
         if random.random() <= travellingSalesman.mutation_probability:
             first_cut, second_cut = sorted(random.sample(range(0, individual.get_length()), 2))
             previous_path = individual.get_path()
             individual.set_path(previous_path[:first_cut] + previous_path[first_cut:second_cut+1][::-1] + previous_path[second_cut+1:])
+
+    @staticmethod
+    def scramble_mutation(individual):
+        if random.random() <= travellingSalesman.mutation_probability:
+            current_path = individual.get_path()
+            permutation_samples = random.sample(current_path, travellingSalesman.permutation_number)
+            indices = [current_path.index(sample) for sample in permutation_samples]
+            random.shuffle(permutation_samples)
+            for i in range(len(permutation_samples)):
+                individual.set_gene(indices[i], permutation_samples[i])
 
     @staticmethod
     def tournament_selection(population):
