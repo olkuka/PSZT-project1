@@ -6,6 +6,8 @@ __author__ = "Aleksandra Kukawka, Bartłomiej Binda"
 __copyright__ = "Copyright 2021, Podstawy Sztucznej Inteligencji"
 
 import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 from download_data import driving_distances
 # import helpers
@@ -14,7 +16,7 @@ from individual import Individual
 from population import Population
 
 
-NUM_ITER = 1000
+NUM_ITER = 100
 # INPUT_FILE = "cities.txt"
 
 # with open(INPUT_FILE) as f:
@@ -27,20 +29,22 @@ NUM_ITER = 1000
 # 	.isin(cities))][cities+["Distance (km)"]] \
 # 	.set_index("Distance (km)")
 
-# for i in range(3):
-# 	individual = helpers.create_individual(cities)
-
-# 	print(individual)
-
-# 	print(helpers.evaluate_path(individual, driving_distances))
-
 population = Population(population_size=15)
+iterations = []
+path_lengths = []
 
 for i in range(NUM_ITER):
 	population = travellingSalesman.evolve(population)
+	if not i%5:
+		# print("Iteration number {}, best path is {}".format(i, population.find_fittest().path_km_length()))
+		iterations.append(i)
+		path_lengths.append(population.find_fittest().path_km_length())
+
 	if not i%20:
 		print("Iteration number {}, best path is {}".format(i, population.find_fittest().path_km_length()))
 
 best_individual = population.find_fittest()
 print("The best path is {}, length {}".format(best_individual.get_path(), best_individual.path_km_length()))
 
+sns.lineplot(x=iterations, y=path_lengths)
+plt.show()
