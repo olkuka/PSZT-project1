@@ -16,7 +16,7 @@ from individual import Individual
 from population import Population
 
 
-NUM_ITER = 100
+NUM_ITER = 1000
 # INPUT_FILE = "cities.txt"
 
 # with open(INPUT_FILE) as f:

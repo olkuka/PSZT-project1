@@ -56,4 +56,3 @@ class Individual():
 
         
         return path_length
-

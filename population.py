@@ -13,6 +13,7 @@ class Population():
         self.individuals = []
         if initialise:
             self.individuals = [Individual() for _ in range(population_size)]
+        self.worst_individual = Individual() # worst to throw out during the last step - succession
 
     def get_individual(self, index):
         return self.individuals[index]
@@ -28,6 +29,9 @@ class Population():
 
     def append_individual(self, individual):
         self.individuals.append(individual)
+
+    def remove_worst_individual(self):
+        self.individuals.remove(self.worst_individual)
 
     def get_size(self):
         return len(self.individuals)
