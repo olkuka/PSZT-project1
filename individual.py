@@ -53,6 +53,4 @@ class Individual():
             path_length += int(self.distances_table[self.distances_table.index == origin][destination])
             origin = destination
 
-
-        
         return path_length

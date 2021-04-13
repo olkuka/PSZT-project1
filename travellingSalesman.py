@@ -26,31 +26,31 @@ class travellingSalesman():
 
         if travellingSalesman.elitism:
             evolved_population.append_individual(population.find_fittest())
-            # evolved_population.worst_individual = population.get_individual(0)
-            # start = 1
+            start = 1
         
-        for i in range(start, population.get_size()):
+        for i in range(population.get_size()):
             individual1 = travellingSalesman.tournament_selection(population)
             individual2 = travellingSalesman.tournament_selection(population)
 
             new_individual = travellingSalesman.crossover(individual1, individual2)
             evolved_population.append_individual(new_individual)
 
-            # checking if new_individual is not the worst individual to remove in a succession step 
+        for i in range(start, evolved_population.get_size()):
+            current_individual = evolved_population.get_individual(i)
+            if random.random() <= 0.5:
+                travellingSalesman.inverse_mutation(current_individual)
+            else:
+                travellingSalesman.inverse_mutation(current_individual)
+            
+            # checking if current_individual is not the worst individual to remove in a succession step 
             # (only if elitism is True)
             if travellingSalesman.elitism:
                 # if we're in the beginning and don't have worst_individual yet 
                 if i == start:
-                    evolved_population.worst_individual = new_individual
+                    evolved_population.worst_individual = current_individual
                 # otherwise
-                elif new_individual.get_fitness() < evolved_population.worst_individual.get_fitness():
-                    evolved_population.worst_individual = new_individual
-
-        for i in range(start, population.get_size()):
-            if random.random() <= 0.5:
-                travellingSalesman.inverse_mutation(evolved_population.get_individual(i))
-            else:
-                travellingSalesman.inverse_mutation(evolved_population.get_individual(i))
+                elif current_individual.get_fitness() < evolved_population.worst_individual.get_fitness():
+                    evolved_population.worst_individual = current_individual
 
         evolved_population.remove_worst_individual
 
