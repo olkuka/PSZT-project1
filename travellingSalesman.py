@@ -40,19 +40,9 @@ class travellingSalesman():
             if random.random() <= 0.5:
                 travellingSalesman.inverse_mutation(current_individual)
             else:
-                travellingSalesman.inverse_mutation(current_individual)
-            
-            # checking if current_individual is not the worst individual to remove in a succession step 
-            # (only if elitism is True)
-            if travellingSalesman.elitism:
-                # if we're in the beginning and don't have worst_individual yet 
-                if i == start:
-                    evolved_population.worst_individual = current_individual
-                # otherwise
-                elif current_individual.get_fitness() < evolved_population.worst_individual.get_fitness():
-                    evolved_population.worst_individual = current_individual
+                travellingSalesman.scramble_mutation(current_individual)
 
-        evolved_population.remove_worst_individual()
+        evolved_population.remove_individual(evolved_population.find_worst())
 
         return evolved_population
 

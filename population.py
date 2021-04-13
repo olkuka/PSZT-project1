@@ -13,7 +13,6 @@ class Population():
         self.individuals = []
         if initialise:
             self.individuals = [Individual() for _ in range(population_size)]
-        self.worst_individual = Individual() # worst to throw out during the last step - succession
 
     def get_individual(self, index):
         return self.individuals[index]
@@ -27,11 +26,17 @@ class Population():
         max_index = individuals_fitness.index(max_fitness)
         return self.individuals[max_index]
 
+    def find_worst(self):
+        individuals_fitness = [ind.get_fitness() for ind in self.individuals]
+        min_fitness = min(individuals_fitness)
+        min_index = individuals_fitness.index(min_fitness)
+        return self.individuals[min_index]
+
     def append_individual(self, individual):
         self.individuals.append(individual)
 
-    def remove_worst_individual(self):
-        self.individuals.remove(self.worst_individual)
+    def remove_individual(self, individual):
+        self.individuals.remove(individual)
 
     def get_size(self):
         return len(self.individuals)
