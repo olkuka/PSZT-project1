@@ -15,8 +15,11 @@ from travellingSalesman import travellingSalesman
 from individual import Individual
 from population import Population
 
+import time
 
-NUM_ITER = 1000
+
+start = time.time()
+NUM_ITER = 100
 # INPUT_FILE = "cities.txt"
 
 # with open(INPUT_FILE) as f:
@@ -45,6 +48,10 @@ for i in range(NUM_ITER):
 
 best_individual = population.find_fittest()
 print("The best path is {}, length {}".format(best_individual.get_path(), best_individual.path_km_length()))
+
+end = time.time()
+print("TIME")
+print(end - start)
 
 sns.lineplot(x=iterations, y=path_lengths)
 plt.show()

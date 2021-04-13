@@ -52,7 +52,7 @@ class travellingSalesman():
                 elif current_individual.get_fitness() < evolved_population.worst_individual.get_fitness():
                     evolved_population.worst_individual = current_individual
 
-        evolved_population.remove_worst_individual
+        evolved_population.remove_worst_individual()
 
         return evolved_population
 
