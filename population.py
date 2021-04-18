@@ -18,6 +18,7 @@ class Population():
         return self.individuals[index]
 
     def get_individuals(self):
+    	# not needed method, can be removed
         return self.individuals
 
     def find_fittest(self):

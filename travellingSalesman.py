@@ -12,11 +12,11 @@ import random
 
 class travellingSalesman():
     # Constants
-    crossover_probability = 0.5
-    mutation_probability = 0.2
-    tournament_size = 2
+    crossover_probability = 0.8
+    mutation_probability = 0.1
     elitism = True
     permutation_number = 5
+    tournament_size = 3
 
 
     @staticmethod
@@ -28,21 +28,39 @@ class travellingSalesman():
             evolved_population.append_individual(population.find_fittest())
             start = 1
         
-        for i in range(population.get_size()):
+        # for i in range(population.get_size()):
+        #     individual1 = travellingSalesman.tournament_selection(population)
+        #     individual2 = travellingSalesman.tournament_selection(population)
+
+        #     new_individual = travellingSalesman.crossover(individual1, individual2)
+        #     evolved_population.append_individual(new_individual)
+
+        # for i in range(start, evolved_population.get_size()):
+        #     current_individual = evolved_population.get_individual(i)
+        #     if random.random() <= 0.5:
+        #     	travellingSalesman.inverse_mutation(current_individual)
+        #     else:
+        #     	travellingSalesman.scramble_mutation(current_individual)
+
+        # evolved_population.remove_individual(evolved_population.find_worst())
+
+        for i in range(population.get_size() // 2):
             individual1 = travellingSalesman.tournament_selection(population)
             individual2 = travellingSalesman.tournament_selection(population)
 
-            new_individual = travellingSalesman.crossover(individual1, individual2)
-            evolved_population.append_individual(new_individual)
-
+            new_individual1, new_individual2 = travellingSalesman.crossover(individual1, individual2)
+            evolved_population.append_individual(new_individual1)
+            evolved_population.append_individual(new_individual2)
+        
         for i in range(start, evolved_population.get_size()):
             current_individual = evolved_population.get_individual(i)
             if random.random() <= 0.5:
-                travellingSalesman.inverse_mutation(current_individual)
+              travellingSalesman.inverse_mutation(current_individual)
             else:
-                travellingSalesman.scramble_mutation(current_individual)
+              travellingSalesman.scramble_mutation(current_individual)
 
-        evolved_population.remove_individual(evolved_population.find_worst())
+        while evolved_population.get_size() != population.get_size():
+            evolved_population.remove_individual(evolved_population.find_worst())
 
         return evolved_population
 
@@ -52,19 +70,26 @@ class travellingSalesman():
             first_parent = individual1
             second_parent = individual2
         else:
-            first_parent = individual2
-            second_parent = individual1
+            return Individual(path=individual1.get_path()), Individual(path=individual2.get_path())
 
-        child = Individual()
+        child1 = Individual()
+        child2 = Individual()
         
         first_cut, second_cut = sorted(random.sample(range(0, first_parent.get_length()), 2))
-        child.set_path(first_parent.get_path()[first_cut:second_cut+1])
+        
+        child1.set_path(first_parent.get_path()[first_cut:second_cut+1])
 
         for gene in second_parent.get_path():
-            if gene not in child.get_path():
-                child.append_path(gene)
+            if gene not in child1.get_path():
+                child1.append_path(gene)
 
-        return child
+        child2.set_path(second_parent.get_path()[first_cut:second_cut+1])
+
+        for gene in first_parent.get_path():
+            if gene not in child2.get_path():
+                child2.append_path(gene)
+
+        return child1, child2
 
     @staticmethod
     def inverse_mutation(individual):
@@ -89,7 +114,7 @@ class travellingSalesman():
         Tournament selection to find individuals for crossover
         """
         indices = random.sample(range(population.get_size()), travellingSalesman.tournament_size)
-        samples = [population.get_individuals()[index] for index in indices]
+        samples = [population.get_individual(index) for index in indices]
         # ind.fitness available with class, for one sort scores?
         selected = sorted(samples, key=lambda ind: ind.get_fitness(), reverse=True)[0]
         

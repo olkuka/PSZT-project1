@@ -13,10 +13,13 @@ CITIES = driving_distances.index.tolist()
 
 
 class Individual():
-    def __init__(self, distances_table=driving_distances):
+    def __init__(self, distances_table=driving_distances, path=None):
         self.cities = CITIES
         self.distances_table = distances_table
-        self.path = self.create_random_individual(self.cities)
+        if path==None:
+            self.path = self.create_random_individual(self.cities)
+        else:
+            self.path = path
 
     def create_random_individual(self, nodes):
         """Randomly shuffles list to create a random path"""
