@@ -37,7 +37,7 @@ for i in range(NUM_ITER):
 		iterations.append(i)
 		path_lengths.append(population.find_fittest().path_km_length())
 
-	# prints best path every 500
+	# prints best path every 500 iterations
 	if not i%500:
 		print("Iteration number {}, best path is {}".format(i, population.find_fittest().path_km_length()))
 
@@ -53,5 +53,8 @@ print()
 
 # visualize the results
 sns.lineplot(x=iterations, y=path_lengths)
+plt.title("Długość trasy komiwojażera")
+plt.xlabel("Długość trasy [km]")
+plt.ylabel("Liczba iteracji")
 plt.show()
 
