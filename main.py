@@ -26,7 +26,7 @@ NUM_ITER = 2000
 population_sizes = [5, 15, 25, 50, 100]
 
 start = time.time()
-population = Population(population_size=16)
+population = Population(population_size=15)
 iterations = []
 path_lengths = []
 
@@ -48,5 +48,5 @@ print("TIME")
 print(end - start)
 print()
 
-# sns.lineplot(x=iterations, y=path_lengths)
-# plt.show()
+sns.lineplot(x=iterations, y=path_lengths)
+plt.show()

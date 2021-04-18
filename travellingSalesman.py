@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 
-"""main.py: ..."""
+"""
+travellingSalesman.py: travellingSalesman class implementation
+Includes all methods needed to perform the genetic algorithm
+"""
 
 __author__ = "Aleksandra Kukawka, Bartłomiej Binda"
 __copyright__ = "Copyright 2021, Podstawy Sztucznej Inteligencji"
@@ -20,38 +23,31 @@ class travellingSalesman():
 
 
     @staticmethod
-    def evolve(population):
-        evolved_population = Population(population.get_size(), initialise=False)
+    def evolve(population, elitism_size=None):
+        """
+        main genetic algorithm function (one iteration)
+        """
+        if elitism_size == None:
+            # set default elitism size to 1
+            elitism_size = 1
+
+        evolved_population = Population(initialise=False)
         start = 0
 
         if travellingSalesman.elitism:
-            evolved_population.append_individual(population.find_fittest())
-            start = 1
+            best_individuals = population.find_many_fittest(elitism_size)
+            for individual in best_individuals:
+                evolved_population.append_individual(individual)
+            start += elitism_size
         
-        # for i in range(population.get_size()):
-        #     individual1 = travellingSalesman.tournament_selection(population)
-        #     individual2 = travellingSalesman.tournament_selection(population)
-
-        #     new_individual = travellingSalesman.crossover(individual1, individual2)
-        #     evolved_population.append_individual(new_individual)
-
-        # for i in range(start, evolved_population.get_size()):
-        #     current_individual = evolved_population.get_individual(i)
-        #     if random.random() <= 0.5:
-        #     	travellingSalesman.inverse_mutation(current_individual)
-        #     else:
-        #     	travellingSalesman.scramble_mutation(current_individual)
-
-        # evolved_population.remove_individual(evolved_population.find_worst())
-
-        for i in range(population.get_size() // 2):
+        for i in range((population.get_size() + 1) // 2):
             individual1 = travellingSalesman.tournament_selection(population)
             individual2 = travellingSalesman.tournament_selection(population)
 
             new_individual1, new_individual2 = travellingSalesman.crossover(individual1, individual2)
             evolved_population.append_individual(new_individual1)
             evolved_population.append_individual(new_individual2)
-        
+
         for i in range(start, evolved_population.get_size()):
             current_individual = evolved_population.get_individual(i)
             if random.random() <= 0.5:
@@ -59,6 +55,11 @@ class travellingSalesman():
             else:
               travellingSalesman.scramble_mutation(current_individual)
 
+        """
+        remove worst elements until the size matches the previous population
+        this will remove k (elitism_size) worst individuals
+        if the population size is odd this will remove k+1 individuals (because our crossover appends two children each step)
+        """
         while evolved_population.get_size() != population.get_size():
             evolved_population.remove_individual(evolved_population.find_worst())
 

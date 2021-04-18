@@ -7,6 +7,8 @@ __copyright__ = "Copyright 2021, Podstawy Sztucznej Inteligencji"
 
 from individual import Individual
 
+import numpy as np
+
 
 class Population():
     def __init__(self, population_size=0, initialise=True):
@@ -26,6 +28,14 @@ class Population():
         max_fitness = max(individuals_fitness)
         max_index = individuals_fitness.index(max_fitness)
         return self.individuals[max_index]
+
+    def find_many_fittest(self, size):
+        individuals_fitness = np.array([ind.get_fitness() for ind in self.individuals])
+        if size == 0:
+            max_indices = []
+        else:
+            max_indices = np.argpartition(individuals_fitness, -size)[-size:]
+        return [self.individuals[index] for index in max_indices]
 
     def find_worst(self):
         individuals_fitness = [ind.get_fitness() for ind in self.individuals]

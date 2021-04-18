@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-"""main.py: ..."""
+"""individual.py: Class Individual implementation"""
 
 __author__ = "Aleksandra Kukawka, Bartłomiej Binda"
 __copyright__ = "Copyright 2021, Podstawy Sztucznej Inteligencji"
@@ -19,7 +19,7 @@ class Individual():
         if path==None:
             self.path = self.create_random_individual(self.cities)
         else:
-            self.path = path
+            self.path = path[:]
 
     def create_random_individual(self, nodes):
         """Randomly shuffles list to create a random path"""
