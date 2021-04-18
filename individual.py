@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
-"""individual.py: Class Individual implementation"""
+"""individual.py: individual class implementation
+Includes all methods for a single individual"""
 
 __author__ = "Aleksandra Kukawka, Bartłomiej Binda"
 __copyright__ = "Copyright 2021, Podstawy Sztucznej Inteligencji"
@@ -14,6 +15,8 @@ CITIES = driving_distances.index.tolist()
 
 class Individual():
     def __init__(self, distances_table=driving_distances, path=None):
+        """Makes a new individual. If we don't provide a path 
+        then we create an individual with random path"""
         self.cities = CITIES
         self.distances_table = distances_table
         if path==None:
@@ -32,6 +35,7 @@ class Individual():
         self.path = new_path
 
     def append_path(self, gene):
+        """"Adds gene to existing path"""
         self.path.append(gene)
 
     def get_gene(self, index):
@@ -44,11 +48,12 @@ class Individual():
         return len(self.path)
 
     def get_fitness(self):
-        """Given some path of cities evaluates how long the path is in km
-        Returns integer"""
+        """Calculates fitness of the path"""
         return 1 / self.path_km_length()
     
     def path_km_length(self):
+        """Given some path of cities evaluates how long the path is in km
+        Returns integer"""
         path_length = 0
         origin = self.path[0]
 
@@ -57,3 +62,5 @@ class Individual():
             origin = destination
 
         return path_length
+
+        
